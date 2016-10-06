@@ -1,0 +1,24 @@
+{
+  "name": "mateuszblaszczyk/record-finder",
+  "description": "It find records in JSON array with fileds: timestamp and distance. For example for sport tracker usage.",
+  "license": "MIT",
+  "keywords": [
+    "json",
+    "record",
+    "finder"
+  ],
+  "authors": [
+    {
+      "name": "Mateusz Blaszczyk"
+    }
+  ],
+  "require": {},
+  "require-dev": {
+    "phpunit/phpunit": "~5"
+  },
+  "autoload": {
+    "psr-4": {
+      "MateuszBlaszczyk\\RecordFinder\\": "src/"
+    }
+  }
+}

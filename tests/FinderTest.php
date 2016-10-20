@@ -1,16 +1,14 @@
 <?php
-
-
-use MateuszBlaszczyk\RecordFinder\Finder;
+use MateuszBlaszczyk\RecordFinder\Finders\DistanceFinder;
 
 class FinderTest extends PHPUnit_Framework_TestCase
 {
-    /** @var  Finder */
+    /** @var  DistanceFinder */
     public $finder;
 
     protected function setUp()
     {
-        $this->finder = new Finder();
+        $this->finder = new DistanceFinder();
     }
 
     protected function tearDown()
@@ -34,7 +32,7 @@ class FinderTest extends PHPUnit_Framework_TestCase
     public function testFindRecord1KmInEndomondoPath()
     {
         $finder = $this->finder->setData($this->getArrayFromJsonFile('endomondoPath.json'));
-        $record = $finder->findRecord(1);
+        $record = $finder->findRecordByDistance(1);
         $this->assertInstanceOf('MateuszBlaszczyk\RecordFinder\Record', $record);
     }
 
@@ -101,7 +99,7 @@ class FinderTest extends PHPUnit_Framework_TestCase
      */
     public function testFindRecord1KmManualPath($data, $expectedSeconds, $expectedPointKey, $measuredDistance, $startDistance)
     {
-        $record = $this->finder->setData($data)->findRecord(1);
+        $record = $this->finder->setData($data)->findRecordByDistance(1);
         $this->assertEquals(1, $record->distance);
         $this->assertEquals($expectedSeconds, $record->seconds);
         $this->assertEquals($expectedPointKey, $record->pointKey);

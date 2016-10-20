@@ -1,41 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Mateusz
- * Date: 24.04.2016
- * Time: 23:32
- */
 
-namespace MateuszBlaszczyk\RecordFinder;
+namespace MateuszBlaszczyk\RecordFinder\Finders;
 
+use MateuszBlaszczyk\RecordFinder\Records\DistanceRecord;
 
-class Finder
+class DistanceFinder extends Finder
 {
-    protected $data;
-
-    public function __construct()
+    public function findRecordByDistance($distanceOfRecordInKm)
     {
-    }
-
-    /**
-     * @param array $data
-     * @return Finder
-     */
-    public function setData(array $data)
-    {
-        $this->data = $data;
-        return $this;
-    }
-
-    public function setJsonData($json)
-    {
-        $this->data = json_decode($json, true);
-        return $this;
-    }
-
-    public function findRecord($distanceOfRecordInKm)
-    {
-        $record = new Record($distanceOfRecordInKm);
+        $record = new DistanceRecord($distanceOfRecordInKm);
         if (!$this->isDistanceGreaterThanLookingRecord($distanceOfRecordInKm)) {
             return null;
         }
@@ -73,12 +46,12 @@ class Finder
         return $record;
     }
 
-    public function isProbablyRecordBetterThanActual($probablyRecord, Record $record)
+    public function isProbablyRecordBetterThanActual($probablyRecord, DistanceRecord $record)
     {
         return $probablyRecord > 0 && $probablyRecord < $record->seconds;
     }
 
-    public function isItFirstIteration(Record $record)
+    public function isItFirstIteration(DistanceRecord $record)
     {
         return $record->seconds === null;
     }

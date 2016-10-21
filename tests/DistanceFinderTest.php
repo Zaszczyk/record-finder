@@ -1,7 +1,7 @@
 <?php
-use MateuszBlaszczyk\RecordFinder\Finders\DistanceFinder;
+use MateuszBlaszczyk\RecordFinder\Finder\DistanceFinder;
 
-class FinderTest extends PHPUnit_Framework_TestCase
+class DistanceFinderTest extends PHPUnit_Framework_TestCase
 {
     /** @var  DistanceFinder */
     public $finder;
@@ -33,7 +33,7 @@ class FinderTest extends PHPUnit_Framework_TestCase
     {
         $finder = $this->finder->setData($this->getArrayFromJsonFile('endomondoPath.json'));
         $record = $finder->findRecordByDistance(1);
-        $this->assertInstanceOf('MateuszBlaszczyk\RecordFinder\Record', $record);
+        $this->assertInstanceOf('MateuszBlaszczyk\RecordFinder\Record\DistanceRecord', $record);
     }
 
     public static function shortPathProvider()
@@ -90,7 +90,33 @@ class FinderTest extends PHPUnit_Framework_TestCase
                     'timestamp' => 25,
                     'distance' => 5
                 ],
-            ], 1, 3, 1, 2]
+            ], 1, 3, 1, 2],
+            [[
+                [
+                    'timestamp' => 0,
+                    'distance' => 0
+                ],
+                [
+                    'timestamp' => 1,
+                    'distance' => 1,
+                ],
+                [
+                    'timestamp' => 10,
+                    'distance' => 2
+                ],
+                [
+                    'timestamp' => 15,
+                    'distance' => 3
+                ],
+                [
+                    'timestamp' => 20,
+                    'distance' => 4
+                ],
+                [
+                    'timestamp' => 25,
+                    'distance' => 5
+                ],
+            ], 1, 1, 1, 0],
         ];
     }
 

@@ -1,8 +1,8 @@
 <?php
 
-namespace MateuszBlaszczyk\RecordFinder\Finders;
+namespace MateuszBlaszczyk\RecordFinder\Finder;
 
-use MateuszBlaszczyk\RecordFinder\Records\DistanceRecord;
+use MateuszBlaszczyk\RecordFinder\Record\DistanceRecord;
 
 class DistanceFinder extends Finder
 {
@@ -18,6 +18,8 @@ class DistanceFinder extends Finder
                 if ($this->isItFirstIteration($record)) {
                     $record->seconds = $point['timestamp'];
                     $record->pointKey = $key;
+                    $record->distanceStart = 0;
+                    $record->measuredDistance = $point['distance'];
                 } else {
                     $pointDistance = $point['distance'];
                     $pointTimestamp = $point['timestamp'];

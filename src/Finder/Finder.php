@@ -1,6 +1,6 @@
 <?php
 
-namespace MateuszBlaszczyk\RecordFinder\Finders;
+namespace MateuszBlaszczyk\RecordFinder\Finder;
 
 class Finder
 {

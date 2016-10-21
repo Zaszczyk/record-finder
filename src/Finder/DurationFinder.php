@@ -1,8 +1,8 @@
 <?php
 
-namespace MateuszBlaszczyk\RecordFinder\Finders;
+namespace MateuszBlaszczyk\RecordFinder\Finder;
 
-use MateuszBlaszczyk\RecordFinder\Records\DurationRecord;
+use MateuszBlaszczyk\RecordFinder\Record\DurationRecord;
 
 class DurationFinder extends Finder
 {
@@ -23,6 +23,8 @@ class DurationFinder extends Finder
                 if ($this->isItFirstIteration($record)) {
                     $record->distance = $point['distance'];
                     $record->pointKey = $key;
+                    $probablyRecordTimeStart = ($point['timestamp'] - $this->offset - $durationOfRecordInSeconds);
+                    $probablyRecordMeasuredDuration = ($point['timestamp'] - $this->offset);
                 } else {
                     $pointDistance = $point['distance'];
                     $pointTimestamp = $point['timestamp'];
@@ -42,7 +44,7 @@ class DurationFinder extends Finder
                         $record->distance = $probablyRecord;
                         $record->pointKey = $key;
                         $record->recordTimeStart = $probablyRecordTimeStart;
-                        $record->measuredDistance = $probablyRecordMeasuredDuration;
+                        $record->measuredDuration = $probablyRecordMeasuredDuration;
                     }
                 }
             }

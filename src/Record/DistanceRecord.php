@@ -1,6 +1,6 @@
 <?php
 
-namespace MateuszBlaszczyk\RecordFinder\Records;
+namespace MateuszBlaszczyk\RecordFinder\Record;
 
 class DistanceRecord extends Record
 {

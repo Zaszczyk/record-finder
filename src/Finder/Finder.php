@@ -6,6 +6,8 @@ class Finder
 {
     protected $data;
 
+    protected $offset;
+
     /**
      * @param array $data
      * @return $this
@@ -20,5 +22,11 @@ class Finder
     {
         $this->data = json_decode($json, true);
         return $this;
+    }
+
+    public function getOffset()
+    {
+        $firstElement = array_values($this->data)[0];
+        return $firstElement['timestamp'];
     }
 }

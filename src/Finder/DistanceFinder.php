@@ -9,6 +9,9 @@ class DistanceFinder extends Finder
     public function findRecordByDistance($distanceOfRecordInKm)
     {
         $record = new DistanceRecord($distanceOfRecordInKm);
+
+        $this->offset = $this->getOffset();
+
         if (!$this->isDistanceGreaterThanLookingRecord($distanceOfRecordInKm)) {
             return null;
         }
@@ -18,7 +21,8 @@ class DistanceFinder extends Finder
                 if ($this->isItFirstIteration($record)) {
                     $record->seconds = $point['timestamp'];
                     $record->pointKey = $key;
-                    $record->distanceStart = 0;
+                    $record->recordDistanceStart = 0;
+                    $record->recordTimeStart = 0;
                     $record->measuredDistance = $point['distance'];
                 } else {
                     $pointDistance = $point['distance'];
@@ -30,6 +34,7 @@ class DistanceFinder extends Finder
                         if ($delta >= $distanceOfRecordInKm) {
                             $probablyRecord = $pointTimestamp - $this->data[$i]['timestamp'];
                             $probablyRecordDistanceStart = $this->data[$i]['distance'];
+                            $probablyRecordTimeStart = ($this->data[$i]['timestamp'] - $this->offset);
                             $probablyRecordMeasuredDistance = $delta;
                             break;
                         }
@@ -38,7 +43,8 @@ class DistanceFinder extends Finder
                     if ($this->isProbablyRecordBetterThanActual($probablyRecord, $record)) {
                         $record->seconds = $probablyRecord;
                         $record->pointKey = $key;
-                        $record->distanceStart = $probablyRecordDistanceStart;
+                        $record->recordDistanceStart = $probablyRecordDistanceStart;
+                        $record->recordTimeStart = $probablyRecordTimeStart;
                         $record->measuredDistance = $probablyRecordMeasuredDistance;
                     }
                 }

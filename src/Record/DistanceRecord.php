@@ -5,7 +5,6 @@ namespace MateuszBlaszczyk\RecordFinder\Record;
 class DistanceRecord extends Record
 {
     public $measuredDistance = null;
-    public $distanceStart = null;
 
     /**
      * RecordByDistance constructor.

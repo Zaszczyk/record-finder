@@ -64,7 +64,7 @@ class DistanceFinderTest extends PHPUnit_Framework_TestCase
                     'timestamp' => 25,
                     'distance' => 5
                 ],
-            ], 2, 2, 1, 1],
+            ], 2, 2, 1, 1, 10],
             [[
                 [
                     'timestamp' => 0,
@@ -90,7 +90,7 @@ class DistanceFinderTest extends PHPUnit_Framework_TestCase
                     'timestamp' => 25,
                     'distance' => 5
                 ],
-            ], 1, 3, 1, 2],
+            ], 1, 3, 1, 2, 12],
             [[
                 [
                     'timestamp' => 0,
@@ -116,20 +116,21 @@ class DistanceFinderTest extends PHPUnit_Framework_TestCase
                     'timestamp' => 25,
                     'distance' => 5
                 ],
-            ], 1, 1, 1, 0],
+            ], 1, 1, 1, 0, 0],
         ];
     }
 
     /**
      * @dataProvider shortPathProvider
      */
-    public function testFindRecord1KmManualPath($data, $expectedSeconds, $expectedPointKey, $measuredDistance, $startDistance)
+    public function testFindRecord1KmManualPath($data, $expectedSeconds, $expectedPointKey, $measuredDistance, $startDistance, $startTime)
     {
         $record = $this->finder->setData($data)->findRecordByDistance(1);
         $this->assertEquals(1, $record->distance);
         $this->assertEquals($expectedSeconds, $record->seconds);
         $this->assertEquals($expectedPointKey, $record->pointKey);
         $this->assertEquals($measuredDistance, $record->measuredDistance);
-        $this->assertEquals($startDistance, $record->distanceStart);
+        $this->assertEquals($startDistance, $record->recordDistanceStart);
+        $this->assertEquals($startTime, $record->recordTimeStart);
     }
 }

@@ -5,7 +5,6 @@ namespace MateuszBlaszczyk\RecordFinder\Record;
 class DurationRecord extends Record
 {
     public $measuredDuration = null;
-    public $recordTimeStart = null;
 
     /**
      * RecordByDuration constructor.

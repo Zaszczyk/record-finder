@@ -26,6 +26,7 @@ class DurationFinderTest extends PHPUnit_Framework_TestCase
             $this->assertInstanceOf('MateuszBlaszczyk\RecordFinder\Record\DurationRecord', $record);
             $this->assertEquals($record->distance, $data->expectedRecordDistance);
             $this->assertEquals($record->recordTimeStart, $data->expectedRecordTimeStart);
+            $this->assertEquals($record->recordDistanceStart, $data->expectedRecordDistanceStart);
             $this->assertEquals($record->pointKey, $data->expectedRecordPointKey);
         }
     }
@@ -36,6 +37,7 @@ class DurationFinderTest extends PHPUnit_Framework_TestCase
         $result->time = 720;
         $result->expectedRecordDistance = 200;
         $result->expectedRecordTimeStart = 2520;
+        $result->expectedRecordDistanceStart = 120;
         $result->expectedRecordPointKey = 10;
         $result->path = [
             [
@@ -101,6 +103,7 @@ class DurationFinderTest extends PHPUnit_Framework_TestCase
         $result->time = 3600;
         $result->expectedRecordDistance = 2600;
         $result->expectedRecordTimeStart = 5400;
+        $result->expectedRecordDistanceStart = 1100;
         $result->expectedRecordPointKey = 15;
         $result->path = [
             [
@@ -192,6 +195,7 @@ class DurationFinderTest extends PHPUnit_Framework_TestCase
         $result->time = 3600;
         $result->expectedRecordDistance = 3100;
         $result->expectedRecordTimeStart = 0;
+        $result->expectedRecordDistanceStart = 0;
         $result->expectedRecordPointKey = 6;
         $result->path = [
             [

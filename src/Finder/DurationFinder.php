@@ -6,8 +6,6 @@ use MateuszBlaszczyk\RecordFinder\Record\DurationRecord;
 
 class DurationFinder extends Finder
 {
-    private $offset;
-
     public function findRecordByTime($durationOfRecordInSeconds)
     {
         $record = new DurationRecord($durationOfRecordInSeconds);
@@ -23,7 +21,8 @@ class DurationFinder extends Finder
                 if ($this->isItFirstIteration($record)) {
                     $record->distance = $point['distance'];
                     $record->pointKey = $key;
-                    $probablyRecordTimeStart = ($point['timestamp'] - $this->offset - $durationOfRecordInSeconds);
+                    $record->recordTimeStart = 0;
+                    $record->recordDistanceStart = 0;
                     $probablyRecordMeasuredDuration = ($point['timestamp'] - $this->offset);
                 } else {
                     $pointDistance = $point['distance'];
@@ -35,6 +34,7 @@ class DurationFinder extends Finder
                         if ($delta >= $durationOfRecordInSeconds) {
                             $probablyRecord = $pointDistance - $this->data[$i]['distance'];
                             $probablyRecordTimeStart = ($this->data[$i]['timestamp'] - $this->offset);
+                            $probablyRecordDistanceStart = $this->data[$i]['distance'];
                             $probablyRecordMeasuredDuration = $delta;
                             break;
                         }
@@ -44,6 +44,7 @@ class DurationFinder extends Finder
                         $record->distance = $probablyRecord;
                         $record->pointKey = $key;
                         $record->recordTimeStart = $probablyRecordTimeStart;
+                        $record->recordDistanceStart = $probablyRecordDistanceStart;
                         $record->measuredDuration = $probablyRecordMeasuredDuration;
                     }
                 }
@@ -68,11 +69,5 @@ class DurationFinder extends Finder
         $array = array_slice($this->data, -1);
         $lastElement = array_pop($array);
         return $lastElement['timestamp'] >= ($this->offset + $durationOfRecordInSeconds);
-    }
-
-    public function getOffset()
-    {
-        $firstElement = array_values($this->data)[0];
-        return $firstElement['timestamp'];
     }
 }

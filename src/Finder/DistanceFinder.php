@@ -4,7 +4,7 @@ namespace MateuszBlaszczyk\RecordFinder\Finder;
 
 use MateuszBlaszczyk\RecordFinder\Record\DistanceRecord;
 
-class DistanceFinder extends Finder
+class DistanceFinder extends AbstractFinder
 {
     public function findRecordByDistance($distanceOfRecordInKm)
     {

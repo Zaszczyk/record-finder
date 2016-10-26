@@ -27,7 +27,8 @@ class DurationFinderTest extends PHPUnit_Framework_TestCase
             $this->assertEquals($record->distance, $data->expectedRecordDistance);
             $this->assertEquals($record->recordTimeStart, $data->expectedRecordTimeStart);
             $this->assertEquals($record->recordDistanceStart, $data->expectedRecordDistanceStart);
-            $this->assertEquals($record->pointKey, $data->expectedRecordPointKey);
+            $this->assertEquals($record->pointKeyStart, $data->expectedRecordPointKeyStart);
+            $this->assertEquals($record->pointKeyEnd, $data->expectedRecordPointKeyEnd);
         }
     }
 
@@ -38,7 +39,8 @@ class DurationFinderTest extends PHPUnit_Framework_TestCase
         $result->expectedRecordDistance = 200;
         $result->expectedRecordTimeStart = 2520;
         $result->expectedRecordDistanceStart = 120;
-        $result->expectedRecordPointKey = 10;
+        $result->expectedRecordPointKeyStart = 7;
+        $result->expectedRecordPointKeyEnd = 10;
         $result->path = [
             [
                 'timestamp' => 0,
@@ -104,7 +106,8 @@ class DurationFinderTest extends PHPUnit_Framework_TestCase
         $result->expectedRecordDistance = 2600;
         $result->expectedRecordTimeStart = 5400;
         $result->expectedRecordDistanceStart = 1100;
-        $result->expectedRecordPointKey = 15;
+        $result->expectedRecordPointKeyStart = 9;
+        $result->expectedRecordPointKeyEnd = 15;
         $result->path = [
             [
                 'timestamp' => 0,
@@ -196,7 +199,8 @@ class DurationFinderTest extends PHPUnit_Framework_TestCase
         $result->expectedRecordDistance = 3100;
         $result->expectedRecordTimeStart = 0;
         $result->expectedRecordDistanceStart = 0;
-        $result->expectedRecordPointKey = 6;
+        $result->expectedRecordPointKeyStart = 0;
+        $result->expectedRecordPointKeyEnd = 6;
         $result->path = [
             [
                 'timestamp' => 0,

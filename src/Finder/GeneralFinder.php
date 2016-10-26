@@ -1,20 +1,18 @@
 <?php
-
 namespace MateuszBlaszczyk\RecordFinder\Finder;
 
-class GeneralFinder extends AbstractFinder
+class GenericFinder
 {
-    public function findRecordByDistance($distanceOfRecordInKm)
+    public function findRecordByDistance($distanceOfRecordInKm, $data)
     {
         $finder = new DistanceFinder();
-        $finder->setData($this->data);
+        $finder->setData($data);
         return $finder->findRecordByDistance($distanceOfRecordInKm);
     }
-
-    public function findRecordByTime($durationOfRecordInSeconds)
+    public function findRecordByTime($durationOfRecordInSeconds, $data)
     {
         $finder = new DurationFinder();
-        $finder->setData($this->data);
+        $finder->setData($data);
         return $finder->findRecordByTime($durationOfRecordInSeconds);
     }
 }

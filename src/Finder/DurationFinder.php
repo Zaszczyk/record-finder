@@ -20,7 +20,8 @@ class DurationFinder extends AbstractFinder
             if ($point['timestamp'] >= ($this->offset + $durationOfRecordInSeconds)) {
                 if ($this->isItFirstIteration($record)) {
                     $record->distance = $point['distance'];
-                    $record->pointKey = $key;
+                    $record->pointKeyStart = 0;
+                    $record->pointKeyEnd = $key;
                     $record->recordTimeStart = 0;
                     $record->recordDistanceStart = 0;
                     $probablyRecordMeasuredDuration = ($point['timestamp'] - $this->offset);
@@ -35,6 +36,7 @@ class DurationFinder extends AbstractFinder
                             $probablyRecord = $pointDistance - $this->data[$i]['distance'];
                             $probablyRecordTimeStart = ($this->data[$i]['timestamp'] - $this->offset);
                             $probablyRecordDistanceStart = $this->data[$i]['distance'];
+                            $probablyRecordPointKeyStart = $i;
                             $probablyRecordMeasuredDuration = $delta;
                             break;
                         }
@@ -42,7 +44,8 @@ class DurationFinder extends AbstractFinder
 
                     if ($this->isProbablyRecordBetterThanActual($probablyRecord, $record)) {
                         $record->distance = $probablyRecord;
-                        $record->pointKey = $key;
+                        $record->pointKeyStart = $probablyRecordPointKeyStart;
+                        $record->pointKeyEnd = $key;
                         $record->recordTimeStart = $probablyRecordTimeStart;
                         $record->recordDistanceStart = $probablyRecordDistanceStart;
                         $record->measuredDuration = $probablyRecordMeasuredDuration;

@@ -4,7 +4,7 @@ namespace MateuszBlaszczyk\RecordFinder\Finder;
 
 use MateuszBlaszczyk\RecordFinder\Record\DurationRecord;
 
-class DurationFinder extends Finder
+class DurationFinder extends AbstractFinder
 {
     public function findRecordByTime($durationOfRecordInSeconds)
     {

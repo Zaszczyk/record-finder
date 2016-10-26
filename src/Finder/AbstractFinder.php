@@ -2,7 +2,7 @@
 
 namespace MateuszBlaszczyk\RecordFinder\Finder;
 
-class Finder
+abstract class AbstractFinder
 {
     protected $data;
 

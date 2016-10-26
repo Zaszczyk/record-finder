@@ -13,5 +13,7 @@ class Record
 
     public $seconds = null;
 
-    public $pointKey = null;
+    public $pointKeyStart = null;
+
+    public $pointKeyEnd = null;
 }

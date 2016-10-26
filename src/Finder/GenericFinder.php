@@ -4,17 +4,17 @@ namespace MateuszBlaszczyk\RecordFinder\Finder;
 
 class GenericFinder
 {
-    public $finder;
-
-    public function findRecordByDistance($distanceOfRecordInKm)
+    public function findRecordByDistance($distanceOfRecordInKm, $data)
     {
-        $this->finder = new DistanceFinder();
-        return $this->finder->findRecordByDistance($distanceOfRecordInKm);
+        $finder = new DistanceFinder();
+        $finder->setData($data);
+        return $finder->findRecordByDistance($distanceOfRecordInKm);
     }
 
-    public function findRecordByTime($durationOfRecordInSeconds)
+    public function findRecordByTime($durationOfRecordInSeconds, $data)
     {
-        $this->finder = new DurationFinder();
-        return $this->finder->findRecordByTime($durationOfRecordInSeconds);
+        $finder = new DurationFinder();
+        $finder->setData($data);
+        return $finder->findRecordByTime($durationOfRecordInSeconds);
     }
 }

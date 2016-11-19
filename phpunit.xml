@@ -2,7 +2,8 @@
          colors="true">
     <testsuites>
         <testsuite name="parser">
-            <file>tests/FinderTest.php</file>
+            <file>tests/DistanceFinderTest.php</file>
+            <file>tests/DurationFinderTest.php</file>
         </testsuite>
     </testsuites>
 </phpunit>

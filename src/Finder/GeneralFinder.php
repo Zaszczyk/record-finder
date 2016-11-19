@@ -1,7 +1,7 @@
 <?php
 namespace MateuszBlaszczyk\RecordFinder\Finder;
 
-class GenericFinder
+class GeneralFinder
 {
     public function findRecordByDistance($distanceOfRecordInKm, $data)
     {

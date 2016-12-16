@@ -22,6 +22,12 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
     {
     }
 
+    public function getArrayFromJsonFile($filename)
+    {
+        $json = file_get_contents(__DIR__ . '/data/' . $filename);
+        return json_decode($json, true);
+    }
+
 
     /**
      * @dataProvider createNewLapProvider
@@ -235,6 +241,22 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(true, $laps[4]->fastest);
         $this->assertEquals(false, $laps[4]->slowest);
 
+    }
+
+    public function testGetWithLongPath()
+    {
+        $this->finder->setData($this->getArrayFromJsonFile('movesPath.json'));
+        $laps = $this->finder->get(1);
+
+        $this->assertEquals(1, $laps[0]->distance);
+        $this->assertEquals(722, $laps[0]->duration);
+        $this->assertEquals(false, $laps[0]->fastest);
+        $this->assertEquals(true, $laps[0]->slowest);
+
+        $this->assertEquals(1, $laps[1]->distance);
+        $this->assertEquals(655, $laps[1]->duration);
+        $this->assertEquals(true, $laps[1]->fastest);
+        $this->assertEquals(false, $laps[1]->slowest);
     }
 
     private function get1Provider()

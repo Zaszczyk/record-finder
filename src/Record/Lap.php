@@ -27,4 +27,16 @@ class Lap
         $this->duration = $duration;
         $this->distance = $distance;
     }
+
+    public function toArray()
+    {
+        return [
+            'duration' => $this->duration,
+            'distance' => $this->distance,
+            'fastest' => $this->fastest,
+            'slowest' => $this->slowest,
+            'pace' => $this->pace,
+            'speed' => $this->speed,
+        ];
+    }
 }

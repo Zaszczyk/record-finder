@@ -18,7 +18,7 @@ class LapsFinder extends AbstractFinder
         foreach ($this->data as $key => $point) {
 
             if ($point['distance'] - $lastLappedDistance >= $groupBy) {
-                $this->laps[] = new Lap($this->getDurationDelta($startingDuration, $point['timestamp']), $groupBy);
+                $this->laps[] = $this->createLap($this->getDurationDelta($startingDuration, $point['timestamp']), $groupBy);
                 $startingDuration = $point['timestamp'];
                 $lastLappedDistance = $point['distance'];
             }
@@ -39,7 +39,9 @@ class LapsFinder extends AbstractFinder
     {
         $lap = new Lap($duration, $distance);
         $lap->pace = $this->countPace($duration, $distance);
-        $lap->speed = $this->countSpeed($duration, $distance);
+        $lap->speed = $this->countSpeedInKmh($duration, $distance);
+
+        return $lap;
     }
 
     public function setFastest()
@@ -72,14 +74,14 @@ class LapsFinder extends AbstractFinder
         }
     }
 
-    public function countPace($duration, $distance)
+    public function countPace($durationInSeconds, $distanceInKm)
     {
-        return round($duration / $distance, 3);
+        return round($durationInSeconds / $distanceInKm, 3);
     }
 
-    public function countSpeed($duration, $distance)
+    public function countSpeedInKmh($durationInSeconds, $distanceInKm)
     {
-        return round($distance / $duration, 3);
+        return round(($distanceInKm / $durationInSeconds) * 3600, 3);
     }
 
 }

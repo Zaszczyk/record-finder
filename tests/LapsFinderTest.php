@@ -69,7 +69,7 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
      */
     public function testCountSpeed($duration, $distance, $expected)
     {
-        $speed = $this->finder->countSpeed($duration, $distance);
+        $speed = $this->finder->countSpeedInKmh($duration, $distance);
 
         $this->assertEquals($expected, $speed);
     }
@@ -78,11 +78,12 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [60, 1, 60],
-            [120, 1, 120],
+            [120, 1, 30],
             [120, 2, 60],
-            [60, 2, 30],
-            [3600, 10, 360],
-            [3601, 10, 360.1],
+            [60, 2, 120],
+            [3600, 10, 10],
+            [3601, 10, 9.997],
+            [3599, 10, 10.003],
         ];
     }
 
@@ -219,6 +220,8 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(10, $laps[2]->distance);
         $this->assertEquals(360, $laps[2]->duration);
+        $this->assertEquals(36, $laps[2]->pace);
+        $this->assertEquals(100, $laps[2]->speed);
         $this->assertEquals(false, $laps[2]->fastest);
         $this->assertEquals(false, $laps[2]->slowest);
 

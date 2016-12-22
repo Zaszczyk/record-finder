@@ -84,11 +84,17 @@ class LapsFinder extends AbstractFinder
 
     public function countPace($durationInSeconds, $distanceInKm)
     {
+        if ($distanceInKm == 0) {
+            return '-';
+        }
         return round($durationInSeconds / $distanceInKm, 3);
     }
 
     public function countSpeedInKmh($durationInSeconds, $distanceInKm)
     {
+        if ($durationInSeconds == 0) {
+            return '-';
+        }
         return round(($distanceInKm / $durationInSeconds) * 3600, 3);
     }
 

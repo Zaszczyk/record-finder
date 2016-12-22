@@ -19,7 +19,7 @@ class DistanceFinder extends AbstractFinder
         foreach ($this->data as $key => $point) {
             if ($point['distance'] >= $distanceOfRecordInKm) {
                 if ($this->isItFirstIteration($record)) {
-                    $record->seconds = $point['timestamp'];
+                    $record->seconds = $point['timestamp'] - $this->offset;
                     $record->pointKeyStart = 0;
                     $record->pointKeyEnd = $key;
                     $record->recordDistanceStart = 0;

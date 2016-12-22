@@ -67,6 +67,7 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
             [60, 2, 30],
             [3600, 10, 360],
             [3601, 10, 360.1],
+            [3601, 0, '-'],
         ];
     }
 
@@ -90,6 +91,7 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
             [3600, 10, 10],
             [3601, 10, 9.997],
             [3599, 10, 10.003],
+            [0, 10, '-'],
         ];
     }
 

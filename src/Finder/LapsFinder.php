@@ -17,7 +17,7 @@ class LapsFinder extends AbstractFinder
         $lastLappedDistance = 0;
         $startingDuration = 0;
         foreach ($this->data as $key => $point) {
-            if ($point['distance'] - $lastLappedDistance >= $groupBy) {
+            if (is_numeric($point['timestamp']) && $point['distance'] - $lastLappedDistance >= $groupBy) {
                 $this->laps[] = $this->createLap($this->getDurationDelta($startingDuration, $point['timestamp'] - $offset), $groupBy);
                 $startingDuration = $point['timestamp'] - $offset;
                 $lastLappedDistance = $point['distance'];

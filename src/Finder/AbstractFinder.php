@@ -15,6 +15,9 @@ abstract class AbstractFinder
     public function setData(array $data)
     {
         $this->data = $data;
+        if (count($this->data) < 1) {
+            throw new \InvalidArgumentException('Data of path is empty.');
+        }
         return $this;
     }
 

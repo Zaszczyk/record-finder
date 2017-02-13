@@ -21,6 +21,9 @@ abstract class AbstractFinder
     public function setJsonData($json)
     {
         $this->data = json_decode($json, true);
+        if (count($this->data) < 1) {
+            throw new \InvalidArgumentException('Data of path is empty.');
+        }
         return $this;
     }
 

@@ -7,14 +7,22 @@ class GenericFinder
     public function findRecordByDistance($distanceOfRecordInKm, $data)
     {
         $finder = new DistanceFinder();
-        $finder->setData($data);
-        return $finder->findRecordByDistance($distanceOfRecordInKm);
+        try {
+            $finder->setData($data);
+            return $finder->findRecordByDistance($distanceOfRecordInKm);
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
     }
 
     public function findRecordByTime($durationOfRecordInSeconds, $data)
     {
         $finder = new DurationFinder();
-        $finder->setData($data);
-        return $finder->findRecordByTime($durationOfRecordInSeconds);
+        try {
+            $finder->setData($data);
+            return $finder->findRecordByTime($durationOfRecordInSeconds);
+        } catch (\InvalidArgumentException $e) {
+            return null;
+        }
     }
 }

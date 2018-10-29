@@ -29,6 +29,20 @@ class DistanceFinderTest extends PHPUnit_Framework_TestCase
         $this->assertInstanceOf('MateuszBlaszczyk\RecordFinder\Record\DistanceRecord', $record);
     }
 
+    public function testFindRecords1KmInLongPath()
+    {
+        $finder = $this->finder->setData($this->getArrayFromJsonFile('longPath.json'));
+        $stack = $finder->findRecordsByDistance(1);
+        $this->assertInstanceOf(\MateuszBlaszczyk\RecordFinder\Record\DistanceRecordStack::class, $stack);
+        $this->assertCount(27970, $stack->getRecords());
+        $this->assertInstanceOf(\MateuszBlaszczyk\RecordFinder\Record\DistanceRecord::class, $stack->peek());
+        $bestRecord = $stack->peek();
+        $this->assertEquals(1, $bestRecord->distance);
+        $this->assertGreaterThan(1, $bestRecord->measuredDistance);
+        $this->assertLessThan(2, $bestRecord->measuredDistance);
+        $this->assertEquals(331, $bestRecord->seconds);
+    }
+
     public function testFindRecord1KmInEndomondoPath()
     {
         $finder = $this->finder->setData($this->getArrayFromJsonFile('endomondoPath.json'));

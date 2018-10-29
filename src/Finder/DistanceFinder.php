@@ -3,6 +3,7 @@
 namespace MateuszBlaszczyk\RecordFinder\Finder;
 
 use MateuszBlaszczyk\RecordFinder\Record\DistanceRecord;
+use MateuszBlaszczyk\RecordFinder\Record\DistanceRecordStack;
 
 class DistanceFinder extends AbstractFinder
 {
@@ -55,6 +56,56 @@ class DistanceFinder extends AbstractFinder
         }
 
         return $record;
+    }
+    public function findRecordsByDistance($distanceOfRecordInKm): DistanceRecordStack
+    {
+        $stack = new DistanceRecordStack();
+        $record = new DistanceRecord($distanceOfRecordInKm);
+
+        $this->offset = $this->getOffset();
+
+        if (!$this->isDistanceGreaterThanLookingRecord($distanceOfRecordInKm)) {
+            return null;
+        }
+
+        foreach ($this->data as $key => $point) {
+            if ($point['distance'] >= $distanceOfRecordInKm) {
+                if ($this->isItFirstIteration($record)) {
+                    $record->seconds = $point['timestamp'] - $this->offset;
+                    $record->pointKeyStart = 0;
+                    $record->pointKeyEnd = $key;
+                    $record->recordDistanceStart = 0;
+                    $record->recordTimeStart = 0;
+                    $record->measuredDistance = $point['distance'];
+                } else {
+                    $pointDistance = $point['distance'];
+                    $pointTimestamp = $point['timestamp'];
+                    $probablyRecord = 0;
+
+                    for ($i = ($key - 1); $i > 0 && $pointDistance > 0; $i--) {
+                        $delta = $pointDistance - $this->data[$i]['distance'];
+                        if ($delta >= $distanceOfRecordInKm) {
+                            $probablyRecord = $pointTimestamp - $this->data[$i]['timestamp'];
+                            $probablyRecordDistanceStart = $this->data[$i]['distance'];
+                            $probablyRecordTimeStart = ($this->data[$i]['timestamp'] - $this->offset);
+                            $probablyRecordPointKeyStart = $i;
+                            $probablyRecordMeasuredDistance = $delta;
+                            break;
+                        }
+                    }
+
+                        $record->seconds = $probablyRecord;
+                        $record->pointKeyStart = $probablyRecordPointKeyStart;
+                        $record->pointKeyEnd = $key;
+                        $record->recordDistanceStart = $probablyRecordDistanceStart;
+                        $record->recordTimeStart = $probablyRecordTimeStart;
+                        $record->measuredDistance = $probablyRecordMeasuredDistance;
+                    $stack->push(clone $record);
+                }
+            }
+        }
+
+        return $stack;
     }
 
     public function isProbablyRecordBetterThanActual($probablyRecord, DistanceRecord $record)

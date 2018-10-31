@@ -9,18 +9,21 @@ class LapsFinder extends AbstractFinder
     /** @var Lap[] */
     public $laps = [];
 
-    public function get($groupBy)
+    public function get($groupBy, bool $getIncompleteLastLap = false)
     {
         $offset = $this->getOffset();
         $this->laps = [];
-
         $lastLappedDistance = 0;
         $startingDuration = 0;
         foreach ($this->data as $key => $point) {
-            if (is_numeric($point['timestamp']) && $point['distance'] - $lastLappedDistance >= $groupBy) {
-                $this->laps[] = $this->createLap($this->getDurationDelta($startingDuration, $point['timestamp'] - $offset), $groupBy);
+            $measuredDistance = $point['distance'] - $lastLappedDistance;
+            if ((is_numeric($point['timestamp']) && $measuredDistance >= $groupBy)) {
+                $this->laps[] = $this->createLap($this->getDurationDelta($startingDuration, $point['timestamp'] - $offset), $groupBy, true);
                 $startingDuration = $point['timestamp'] - $offset;
                 $lastLappedDistance = $point['distance'];
+            }
+            elseif(($getIncompleteLastLap && count($this->data) - 1 == $key)){
+                $this->laps[] = $this->createLap($this->getDurationDelta($startingDuration, $point['timestamp'] - $offset), $measuredDistance, false);
             }
         }
 
@@ -35,9 +38,9 @@ class LapsFinder extends AbstractFinder
         return $nowDuration - $startingDuration;
     }
 
-    public function createLap($duration, $distance)
+    public function createLap($duration, $distance, bool $complete)
     {
-        $lap = new Lap($duration, $distance);
+        $lap = new Lap($duration, $distance, $complete);
         $lap->pace = $this->countPace($duration, $distance);
         $lap->speed = $this->countSpeedInKmh($duration, $distance);
 
@@ -52,7 +55,7 @@ class LapsFinder extends AbstractFinder
 
         $fastestLap = null;
         foreach ($this->laps as $lap) {
-            if ($lap->duration !== null && ($fastestLap === null || $fastestLap->duration > $lap->duration)) {
+            if ($lap->complete && $lap->duration !== null && ($fastestLap === null || $fastestLap->duration > $lap->duration)) {
                 if ($fastestLap) {
                     $fastestLap->fastest = false;
                 }
@@ -71,7 +74,7 @@ class LapsFinder extends AbstractFinder
 
         $slowestLap = null;
         foreach ($this->laps as $lap) {
-            if ($lap->duration !== null && ($slowestLap === null || $slowestLap->duration < $lap->duration)) {
+            if ($lap->complete && $lap->duration !== null && ($slowestLap === null || $slowestLap->duration < $lap->duration)) {
                 if ($slowestLap) {
                     $slowestLap->slowest = false;
                 }

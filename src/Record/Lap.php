@@ -17,15 +17,19 @@ class Lap
 
     public $speed = null;
 
+    public $complete = true;
+
     /**
      * Lap constructor.
      * @param null $duration
      * @param null $distance
+     * @param bool $complete
      */
-    public function __construct($duration, $distance)
+    public function __construct($duration, $distance, bool $complete)
     {
         $this->duration = $duration;
         $this->distance = $distance;
+        $this->complete = $complete;
     }
 
     public function toArray()
@@ -37,6 +41,7 @@ class Lap
             'slowest' => $this->slowest,
             'pace' => $this->pace,
             'speed' => $this->speed,
+            'complete' => $this->complete,
         ];
     }
 }

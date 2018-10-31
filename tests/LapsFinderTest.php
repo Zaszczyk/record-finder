@@ -32,19 +32,20 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider createNewLapProvider
      */
-    public function testLapConstructor($duration, $distance, $expectedDuration, $expectedDistance)
+    public function testLapConstructor($duration, $distance, $complete, $expectedDuration, $expectedDistance, $expectedComplete)
     {
-        $lap = new Lap($duration, $distance);
+        $lap = new Lap($duration, $distance, $complete);
 
         $this->assertEquals($expectedDistance, $lap->distance);
         $this->assertEquals($expectedDuration, $lap->duration);
+        $this->assertEquals($expectedComplete, $lap->complete);
     }
 
     public function createNewLapProvider()
     {
         return [
-            [1, 2, 1, 2],
-            [1.1, 22.2, 1.1, 22.2],
+            [1, 2, true, 1, 2, true],
+            [1.1, 22.2, false, 1.1, 22.2, false],
         ];
     }
 
@@ -118,10 +119,10 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
     public function testSetFastestAndSetSlowest1()
     {
         $laps = [
-            new Lap(0, 1),
-            new Lap(1, 1),
-            new Lap(999, 1),
-            new Lap(100, 1),
+            new Lap(0, 1, true),
+            new Lap(1, 1, true),
+            new Lap(999, 1, true),
+            new Lap(100, 1, true),
         ];
 
         $this->finder->laps = $laps;
@@ -142,10 +143,10 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
     public function testSetFastestAndSetSlowest2()
     {
         $laps = [
-            new Lap(1, 1),
-            new Lap(100, 1),
-            new Lap(null, 1),
-            new Lap(999, 1),
+            new Lap(1, 1, true),
+            new Lap(100, 1, true),
+            new Lap(null, 1, true),
+            new Lap(999, 1, true),
         ];
 
         $this->finder->laps = $laps;
@@ -166,10 +167,10 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
     public function testSetFastestAndSetSlowest3()
     {
         $laps = [
-            new Lap(10, 1),
-            new Lap(100, 1),
-            new Lap(1, 1),
-            new Lap(101, 1),
+            new Lap(10, 1, true),
+            new Lap(100, 1, true),
+            new Lap(1, 1, true),
+            new Lap(101, 1, true),
         ];
 
         $this->finder->laps = $laps;
@@ -189,10 +190,10 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
     public function testSetFastestAndSetSlowest4()
     {
         $laps = [
-            new Lap(null, 1),
-            new Lap(100, 1),
-            new Lap(1, 1),
-            new Lap(100, 1),
+            new Lap(null, 1, true),
+            new Lap(100, 1, true),
+            new Lap(1, 1, true),
+            new Lap(100, 1, true),
         ];
 
         $this->finder->laps = $laps;
@@ -250,15 +251,44 @@ class LapsFinderTest extends \PHPUnit_Framework_TestCase
         $this->finder->setData($this->getArrayFromJsonFile('movesPath.json'));
         $laps = $this->finder->get(1);
 
+        $this->assertEquals(2, count($laps));
         $this->assertEquals(1, $laps[0]->distance);
         $this->assertEquals(722, $laps[0]->duration);
         $this->assertEquals(false, $laps[0]->fastest);
         $this->assertEquals(true, $laps[0]->slowest);
+        $this->assertEquals(true, $laps[0]->complete);
+
 
         $this->assertEquals(1, $laps[1]->distance);
         $this->assertEquals(655, $laps[1]->duration);
         $this->assertEquals(true, $laps[1]->fastest);
         $this->assertEquals(false, $laps[1]->slowest);
+        $this->assertEquals(true, $laps[0]->complete);
+    }
+
+    public function testGetWithLongPathAndIncomplete()
+    {
+        $this->finder->setData($this->getArrayFromJsonFile('movesPath.json'));
+        $laps = $this->finder->get(1, true);
+
+        $this->assertEquals(3, count($laps));
+        $this->assertEquals(1, $laps[0]->distance);
+        $this->assertEquals(722, $laps[0]->duration);
+        $this->assertEquals(false, $laps[0]->fastest);
+        $this->assertEquals(true, $laps[0]->slowest);
+        $this->assertEquals(true, $laps[0]->complete);
+
+        $this->assertEquals(1, $laps[1]->distance);
+        $this->assertEquals(655, $laps[1]->duration);
+        $this->assertEquals(true, $laps[1]->fastest);
+        $this->assertEquals(false, $laps[1]->slowest);
+        $this->assertEquals(true, $laps[1]->complete);
+
+        $this->assertEquals(0.08101154601649974, $laps[2]->distance);
+        $this->assertEquals(97, $laps[2]->duration);
+        $this->assertEquals(false, $laps[2]->fastest);
+        $this->assertEquals(false, $laps[2]->slowest);
+        $this->assertEquals(false, $laps[2]->complete);
     }
 
     private function get1Provider()
